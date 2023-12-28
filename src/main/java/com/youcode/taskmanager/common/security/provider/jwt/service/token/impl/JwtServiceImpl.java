@@ -1,11 +1,13 @@
 package com.youcode.taskmanager.common.security.provider.jwt.service.token.impl;
 
 import com.youcode.taskmanager.common.security.provider.jwt.service.token.JwtService;
+import com.youcode.taskmanager.shared.Enum.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.micrometer.observation.annotation.Observed;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,9 +33,14 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
+    public TokenType extractTokenType(String token) {
+        return extractClaim(token, claims -> TokenType.valueOf(claims.get("tokenType", String.class)));
+    }
+
+    @Override
     public String generaAccessToken(UserDetails userDetails) {
         Date expiry_5_minute = new Date(System.currentTimeMillis() + 5L * 60 * 1000);
-        return generateToken(new HashMap<>(), userDetails, expiry_5_minute);
+        return generateToken(new HashMap<>(), userDetails, expiry_5_minute, TokenType.Access);
     }
 
     @Override
@@ -42,13 +49,27 @@ public class JwtServiceImpl implements JwtService {
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    @Override
+    public void checkTokenType(String token, TokenType tokenType) {
+        extractClaim(token, claims -> {
+            if (!claims.get("tokenType").equals(tokenType.name())) {
+                throw new IllegalStateException("Token type is not valid");
+            }
+            return true;
+        });
+    }
+
     protected <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
 
-    protected String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Date expiration) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+    @Observed
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, Date expiration, TokenType tokenType) {
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .claim("tokenType", tokenType.name())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(expiration)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();

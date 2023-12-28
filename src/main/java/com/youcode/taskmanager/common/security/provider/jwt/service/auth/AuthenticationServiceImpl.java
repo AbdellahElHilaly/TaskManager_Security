@@ -58,15 +58,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtAuthenticationResponse signin(SigninRequest request) {
+    public JwtAuthenticationResponse signin(SigninRequest request ,HttpServletRequest httpServletRequest) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        userPrincipal.setUser(userService.findByEmailOrThrow(request.getEmail()));
+        User user = userService.findByEmail(request.getEmail());
+
+        userPrincipal.setUser(user);
+
         var jwt = jwtService.generaAccessToken(userPrincipal);
-        return JwtAuthenticationResponse.builder().accessToken(jwt).build();
+
+        RefreshToken refreshToken = jwtRefreshService.getRefreshToken(httpServletRequest, userPrincipal);
+        refreshToken.setUser(user);
+        refreshToken = refreshTokenService.update(refreshToken);
+
+        return JwtAuthenticationResponse.builder().
+                accessToken(jwt)
+                .refreshToken(refreshToken.getToken())
+                .build();
     }
 
     @Override
@@ -75,8 +86,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String refreshToken = jwtRefreshService.validateRefreshToken(httpServletRequest);
 
         RefreshToken refreshTokenEntity = refreshTokenService.findByToken(refreshToken);
-
-
 
         userDeviceInfoService.validateUserDeviceInfo(httpServletRequest, refreshTokenEntity.getUserDeviceInfo());
 

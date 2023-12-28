@@ -6,6 +6,7 @@ import com.youcode.taskmanager.common.security.provider.jwt.service.info.UserDev
 import com.youcode.taskmanager.common.security.provider.jwt.service.token.JwtRefreshService;
 import com.youcode.taskmanager.core.database.model.entity.RefreshToken;
 import com.youcode.taskmanager.core.database.model.entity.User;
+import com.youcode.taskmanager.shared.Enum.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +39,7 @@ public class JwtRefreshServiceImpl  implements JwtRefreshService {
                 .user((User) userDetails)
                 .ipAddress(userDeviceInfo.getIpAddress())
                 .userAgent(userDeviceInfo.getUserAgent())
-                .token(jwtServiceImpl.generateToken(new HashMap<>(), userDetails, expiry_15_day))
+                .token(jwtServiceImpl.generateToken(new HashMap<>(), userDetails, expiry_15_day, TokenType.Refresh))
                 .build();
     }
 
@@ -48,7 +49,11 @@ public class JwtRefreshServiceImpl  implements JwtRefreshService {
         String authHeader = request.getHeader("Authorization");
 
         if (shouldFilterProceed(authHeader)) {
+
             String jwt = extractJwtFromHeader(authHeader);
+
+            jwtServiceImpl.checkTokenType(jwt, TokenType.Refresh);
+
             String userEmail = jwtServiceImpl.extractUserName(jwt);
 
             checkUserName(userEmail);

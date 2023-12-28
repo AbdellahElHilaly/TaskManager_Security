@@ -25,8 +25,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest request) {
-        return ResponseEntity.ok(authenticationService.signin(request));
+    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest request, HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok(authenticationService.signin(request, httpServletRequest));
     }
 
     @PostMapping("/refresh")

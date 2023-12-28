@@ -19,7 +19,7 @@ public class UserPrincipalServiceImpl implements UserPrincipalService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
-                userPrincipal.setUser(userService.findByEmailOrThrow(username));
+                userPrincipal.setUser(userService.findByEmail(username));
                 return userPrincipal;
 
             }

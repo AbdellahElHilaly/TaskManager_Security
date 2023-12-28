@@ -1,12 +1,12 @@
 package com.youcode.taskmanager.common.security.filter;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import com.youcode.taskmanager.common.security.principal.service.UserPrincipalService;
 import com.youcode.taskmanager.common.security.provider.jwt.service.token.JwtService;
-import com.youcode.taskmanager.core.service.UserService;
+import com.youcode.taskmanager.shared.Enum.TokenType;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (shouldFilterProceed(authHeader)) {
+
             String jwt = extractJwtFromHeader(authHeader);
+
+            validateTokenTypes(jwt, request);
+
             String userEmail = jwtService.extractUserName(jwt);
 
             if (isUserEligibleForAuthentication(userEmail)) {
@@ -47,6 +51,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
+    private void validateTokenTypes(String jwt, HttpServletRequest request) {
+        if (getEndPoint(request).contains("refresh")) {
+            jwtService.checkTokenType(jwt, TokenType.Refresh);
+        } else {
+            jwtService.checkTokenType(jwt, TokenType.Access);
+        }
+    }
+
+    private String getEndPoint(HttpServletRequest request) {
+        String url = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        return url.substring(contextPath.length());
+    }
+
+
 
     private boolean shouldFilterProceed(String authHeader) {
         return StringUtils.isNotEmpty(authHeader) && StringUtils.startsWith(authHeader, "Bearer ");

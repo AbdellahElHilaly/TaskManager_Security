@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {
     User save(User user);
-    User findByEmailOrThrow(String email);
 
+
+    User findByEmail(String email);
 }

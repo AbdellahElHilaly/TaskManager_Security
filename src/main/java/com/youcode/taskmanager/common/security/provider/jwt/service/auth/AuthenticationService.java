@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthenticationService {
     JwtAuthenticationResponse signup(SignUpRequest request, HttpServletRequest httpServletRequest);
-    JwtAuthenticationResponse signin(SigninRequest request);
+    JwtAuthenticationResponse signin(SigninRequest request, HttpServletRequest httpServletRequest);
 
     JwtAuthenticationResponse refresh(HttpServletRequest httpServletRequest);
 }
