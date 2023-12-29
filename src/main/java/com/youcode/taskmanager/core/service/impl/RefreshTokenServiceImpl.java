@@ -58,4 +58,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .orElseThrow(() -> new NoSuchElementException("Could not find refresh token"));
     }
 
+    @Override
+    public void delete(RefreshToken refreshToken) {
+        refreshTokenRepository.delete(refreshToken);
+    }
+
 }

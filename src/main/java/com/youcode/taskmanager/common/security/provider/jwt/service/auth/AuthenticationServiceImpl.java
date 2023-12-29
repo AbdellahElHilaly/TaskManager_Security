@@ -1,5 +1,6 @@
 package com.youcode.taskmanager.common.security.provider.jwt.service.auth;
 
+import com.youcode.taskmanager.common.security.dto.response.JwtRefreshTokenResponse;
 import com.youcode.taskmanager.common.security.dto.vm.UserDeviceInfo;
 import com.youcode.taskmanager.common.security.principal.model.UserPrincipal;
 import com.youcode.taskmanager.common.security.provider.jwt.service.info.UserDeviceInfoService;
@@ -35,6 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final JwtRefreshService jwtRefreshService;
     private final AuthenticationManager authenticationManager;
+
     private final UserDeviceInfoService userDeviceInfoService;
 
 
@@ -64,6 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
+
         User user = userService.findByEmail(request.getEmail());
 
         userPrincipal.setUser(user);
@@ -81,7 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtAuthenticationResponse refresh(HttpServletRequest httpServletRequest) {
+    public JwtRefreshTokenResponse refresh(HttpServletRequest httpServletRequest) {
 
         String refreshToken = jwtRefreshService.validateRefreshToken(httpServletRequest);
 
@@ -93,7 +96,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         var jwt = jwtService.generaAccessToken(userPrincipal);
 
-        return JwtAuthenticationResponse.builder().accessToken(jwt).build();
+        return JwtRefreshTokenResponse.builder().accessToken(jwt).build();
+
+    }
+
+    @Override
+    public void logout(HttpServletRequest httpServletRequest) {
+
+        String refreshToken = jwtRefreshService.validateRefreshToken(httpServletRequest);
+
+        RefreshToken refreshTokenEntity = refreshTokenService.findByToken(refreshToken);
+
+        userDeviceInfoService.validateUserDeviceInfo(httpServletRequest, refreshTokenEntity.getUserDeviceInfo());
+
+        refreshTokenService.delete(refreshTokenEntity);
 
     }
 }

@@ -53,7 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void validateTokenTypes(String jwt, HttpServletRequest request) {
-        if (getEndPoint(request).contains("refresh")) {
+        if (getEndPoint(request).contains("refresh")
+        || getEndPoint(request).contains("logout")) {
             jwtService.checkTokenType(jwt, TokenType.Refresh);
         } else {
             jwtService.checkTokenType(jwt, TokenType.Access);
