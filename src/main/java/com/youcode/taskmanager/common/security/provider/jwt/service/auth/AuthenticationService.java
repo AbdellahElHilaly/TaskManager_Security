@@ -1,9 +1,9 @@
 package com.youcode.taskmanager.common.security.provider.jwt.service.auth;
 
-import com.youcode.taskmanager.common.security.dto.request.SignUpRequest;
-import com.youcode.taskmanager.common.security.dto.request.SigninRequest;
-import com.youcode.taskmanager.common.security.dto.response.JwtAuthenticationResponse;
-import com.youcode.taskmanager.common.security.dto.response.JwtRefreshTokenResponse;
+import com.youcode.taskmanager.common.security.principal.dto.request.SignUpRequest;
+import com.youcode.taskmanager.common.security.principal.dto.request.SigninRequest;
+import com.youcode.taskmanager.common.security.principal.dto.response.JwtAuthenticationResponse;
+import com.youcode.taskmanager.common.security.principal.dto.response.JwtRefreshTokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthenticationService {

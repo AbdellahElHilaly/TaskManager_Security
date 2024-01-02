@@ -1,6 +1,6 @@
 package com.youcode.taskmanager.common.security.provider.jwt.service.info;
 
-import com.youcode.taskmanager.common.security.dto.vm.UserDeviceInfo;
+import com.youcode.taskmanager.common.security.principal.dto.locale.UserDeviceInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;

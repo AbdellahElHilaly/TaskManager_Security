@@ -1,4 +1,4 @@
-package com.youcode.taskmanager.common.security.dto.response;
+package com.youcode.taskmanager.common.security.principal.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

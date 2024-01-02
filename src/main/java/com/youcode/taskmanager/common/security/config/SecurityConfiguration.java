@@ -4,7 +4,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 import com.youcode.taskmanager.common.security.filter.JwtAuthenticationFilter;
 import com.youcode.taskmanager.common.security.principal.service.UserPrincipalService;
-import com.youcode.taskmanager.core.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

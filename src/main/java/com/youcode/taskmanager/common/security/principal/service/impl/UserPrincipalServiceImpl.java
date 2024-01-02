@@ -2,7 +2,7 @@ package com.youcode.taskmanager.common.security.principal.service.impl;
 
 import com.youcode.taskmanager.common.security.principal.model.UserPrincipal;
 import com.youcode.taskmanager.common.security.principal.service.UserPrincipalService;
-import com.youcode.taskmanager.core.service.UserService;
+import com.youcode.taskmanager.core.service.app.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

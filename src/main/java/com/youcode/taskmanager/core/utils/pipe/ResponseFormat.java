@@ -21,6 +21,7 @@ public class ResponseFormat<T> {
         return this;
     }
 
+
     public ResponseFormat<T> format(String message) {
         this.timestamp = LocalDateTime.now();
         this.message = "AFSAT API responded : " + message;

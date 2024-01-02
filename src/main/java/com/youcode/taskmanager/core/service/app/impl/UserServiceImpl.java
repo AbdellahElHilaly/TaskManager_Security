@@ -1,22 +1,21 @@
-package com.youcode.taskmanager.core.service.impl;
+package com.youcode.taskmanager.core.service.app.impl;
 
+import com.youcode.taskmanager.core.database.model.dto.response.UserSingleResponse;
 import com.youcode.taskmanager.core.database.model.entity.User;
 import com.youcode.taskmanager.core.database.repository.UserRepository;
-import com.youcode.taskmanager.core.service.RefreshTokenService;
-import com.youcode.taskmanager.core.service.UserService;
+import com.youcode.taskmanager.core.service.app.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-
 
     @Override
     public User save(User user) {
@@ -29,6 +28,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return findByEmailOrThrow(email);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findById(UUID id) {
+        return findByIdOrThrow(id);
+    }
+
+    private User findByIdOrThrow(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 

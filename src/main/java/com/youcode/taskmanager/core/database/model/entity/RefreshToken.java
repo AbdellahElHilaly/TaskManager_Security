@@ -1,10 +1,9 @@
 package com.youcode.taskmanager.core.database.model.entity;
 
-import com.youcode.taskmanager.common.security.dto.vm.UserDeviceInfo;
+import com.youcode.taskmanager.common.security.principal.dto.locale.UserDeviceInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity

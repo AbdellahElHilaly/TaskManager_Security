@@ -1,6 +1,6 @@
 package com.youcode.taskmanager.common.security.provider.jwt.service.token.impl;
 
-import com.youcode.taskmanager.common.security.dto.vm.UserDeviceInfo;
+import com.youcode.taskmanager.common.security.principal.dto.locale.UserDeviceInfo;
 import com.youcode.taskmanager.common.security.principal.service.UserPrincipalService;
 import com.youcode.taskmanager.common.security.provider.jwt.service.info.UserDeviceInfoService;
 import com.youcode.taskmanager.common.security.provider.jwt.service.token.JwtRefreshService;
@@ -10,10 +10,7 @@ import com.youcode.taskmanager.shared.Enum.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

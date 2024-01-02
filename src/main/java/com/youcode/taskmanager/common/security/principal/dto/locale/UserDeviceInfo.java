@@ -1,4 +1,4 @@
-package com.youcode.taskmanager.common.security.dto.vm;
+package com.youcode.taskmanager.common.security.principal.dto.locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.youcode.taskmanager.core.service;
+package com.youcode.taskmanager.core.service.app;
 
 import com.youcode.taskmanager.core.database.model.entity.RefreshToken;
 import com.youcode.taskmanager.core.database.model.entity.User;

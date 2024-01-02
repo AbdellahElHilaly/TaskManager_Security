@@ -4,6 +4,9 @@ import com.youcode.taskmanager.shared.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -13,16 +16,27 @@ import lombok.*;
 @ToString
 public class User  {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     private String firstName;
     private String lastName;
+
     @Column(unique = true)
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    @OneToMany(mappedBy = "assignedTo")
+    @ToString.Exclude
+    private List<Task> tasksAssigned;
+
+    @OneToMany(mappedBy = "assignedBy")
+    @ToString.Exclude
+    private List<Task> tasksAssignedBy;
 
 }
 

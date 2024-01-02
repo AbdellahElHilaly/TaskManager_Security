@@ -1,11 +1,10 @@
-package com.youcode.taskmanager.core.service.impl;
+package com.youcode.taskmanager.core.service.app.impl;
 
-import com.youcode.taskmanager.common.security.provider.jwt.service.token.JwtRefreshService;
 import com.youcode.taskmanager.core.database.model.entity.RefreshToken;
 import com.youcode.taskmanager.core.database.model.entity.User;
 import com.youcode.taskmanager.core.database.repository.RefreshTokenRepository;
-import com.youcode.taskmanager.core.service.RefreshTokenService;
-import com.youcode.taskmanager.core.service.UserService;
+import com.youcode.taskmanager.core.service.app.RefreshTokenService;
+import com.youcode.taskmanager.core.service.app.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
