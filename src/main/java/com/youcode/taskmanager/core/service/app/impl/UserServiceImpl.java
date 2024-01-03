@@ -1,6 +1,5 @@
 package com.youcode.taskmanager.core.service.app.impl;
 
-import com.youcode.taskmanager.core.database.model.dto.response.UserSingleResponse;
 import com.youcode.taskmanager.core.database.model.entity.User;
 import com.youcode.taskmanager.core.database.repository.UserRepository;
 import com.youcode.taskmanager.core.service.app.UserService;

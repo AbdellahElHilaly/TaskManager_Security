@@ -1,12 +1,16 @@
 package com.youcode.taskmanager.core.database.model.dto.request;
 
+import com.youcode.taskmanager.common.validation.annotaion.PresentOr2DaysFuture;
 import com.youcode.taskmanager.common.validation.annotaion.UUIDFormat;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,12 +36,13 @@ public class TaskRequest {
     @NotNull(message = "Start Date cannot be null")
     @FutureOrPresent(message = "Start Date cannot be in the past")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    @PresentOr2DaysFuture
+    private LocalDate startDate;
 
     @NotNull(message = "Start Date cannot be null")
     @FutureOrPresent(message = "Start Date cannot be in the past")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotEmpty(message = "Tag Names list cannot be empty")
     @UniqueElements(message = "Tag Names list cannot contain repeated elements")

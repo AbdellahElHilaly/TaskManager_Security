@@ -1,5 +1,6 @@
 package com.youcode.taskmanager.core.service.app.impl;
 
+import com.youcode.taskmanager.core.database.model.entity.Tag;
 import com.youcode.taskmanager.core.database.model.entity.Task;
 import com.youcode.taskmanager.core.database.repository.TaskRepository;
 import com.youcode.taskmanager.core.service.app.TaskService;
@@ -8,10 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 
 @Service
@@ -27,28 +27,16 @@ public class TaskServiceImpl implements TaskService {
         task.setAssignedBy(userService.findById(task.getAssignedBy().getId()));
         task.setAssignedTo(userService.findById(task.getAssignedTo().getId()));
 
-        CompletableFuture<Task> taskFuture = CompletableFuture.supplyAsync(
-                () -> taskRepository.save(task)
-        );
-
-        CompletableFuture<Void> tagFuture = CompletableFuture.runAsync(() -> {
-            task.getTags().forEach(tag -> {
-                if(tagService.findByName(tag.getName()) != null) {
-                    tag.setId(tagService.findByName(tag.getName()).getId());
-                }
-                tagService.save(tag);
-            });
+        List<Tag> tagsToHandel = new ArrayList<>();
+        task.getTags().forEach(tag -> {
+            Tag tempTag = tagService.findByName(tag.getName());
+            if(tempTag != null){
+                tagsToHandel.add(tempTag);
+            }
+            else tagsToHandel.add(tagService.save(tag));
         });
-
-        Task savedTask = null;
-        try {
-            savedTask = taskFuture.get(); // wait for the task to be saved
-            tagFuture.get(); // wait for the tags to be saved
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        return savedTask;
+        task.setTags(tagsToHandel);
+        return taskRepository.save(task);
     }
 
     @Override
@@ -57,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(UUID id , Task task) {
+    public Task update(UUID id, Task task) {
         findByIdOrThrow(id);
         task.setId(id);
         return taskRepository.save(task);

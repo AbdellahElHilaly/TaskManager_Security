@@ -31,13 +31,20 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken findByUser(User user) {
-        return findByUserOrThrow(user);
+        return findByUserOrNull(user);
+    }
+
+    private RefreshToken findByUserOrNull(User user) {
+        return refreshTokenRepository.findByUser(user).orElse(null);
     }
 
     @Override
     public RefreshToken update(RefreshToken refreshToken) {
 
         RefreshToken refreshTokenFound = findByUser(refreshToken.getUser());
+        if (refreshTokenFound == null) {
+            refreshTokenFound = refreshToken;
+        }
         refreshTokenFound.setToken(refreshToken.getToken());
         refreshTokenFound.setIpAddress(refreshToken.getIpAddress());
         refreshTokenFound.setUserAgent(refreshToken.getUserAgent());
