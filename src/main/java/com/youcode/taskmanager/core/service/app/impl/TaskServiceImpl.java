@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 
 @Service
@@ -49,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(UUID id , Task task) {
+    public Task update(UUID id, Task task) {
         findByIdOrThrow(id);
         task.setId(id);
         return taskRepository.save(task);
