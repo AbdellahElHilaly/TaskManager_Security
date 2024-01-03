@@ -1,0 +1,6 @@
+projectKey=project:task_manger_2
+serverUrl=http://localhost:9000
+serverVersion=9.8.0.63668
+dashboardUrl=http://localhost:9000/dashboard?id=project%3Atask_manger_2
+ceTaskId=AYzPr0IMQ5VjLU8WpqE2
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYzPr0IMQ5VjLU8WpqE2
