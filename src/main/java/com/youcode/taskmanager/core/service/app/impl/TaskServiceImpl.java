@@ -55,6 +55,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteById(UUID uuid) {
+
         taskRepository.delete(findByIdOrThrow(uuid));
     }
 
@@ -68,4 +69,8 @@ public class TaskServiceImpl implements TaskService {
                 () -> new EntityNotFoundException("Task not found with id: " + uuid)
         );
     }
+
+
 }
+
+

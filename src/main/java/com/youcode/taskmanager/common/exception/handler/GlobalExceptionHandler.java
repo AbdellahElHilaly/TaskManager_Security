@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException exception, HttpServletRequest request) {
 
+
         Map<String, java.util.List<String>> errorDetails = exception.getBindingResult()
                 .getFieldErrors()
                 .stream()

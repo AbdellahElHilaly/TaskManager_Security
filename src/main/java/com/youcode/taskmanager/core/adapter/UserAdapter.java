@@ -5,6 +5,7 @@ import com.youcode.taskmanager.core.database.model.entity.User;
 import com.youcode.taskmanager.core.service.app.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,5 +31,12 @@ public class UserAdapter {
 
         return userSingleResponses;
 
+    }
+
+    public UserSingleResponse getMe() {
+        User me  = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return modelMapper.map(
+                userService.findByEmail(me.getEmail()),
+                UserSingleResponse.class);
     }
 }

@@ -24,8 +24,8 @@ public class TaskController {
     private final TaskAdapter taskAdapter;
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+    public ResponseEntity<List<TaskResponse>> getAllTasks() {
+        return ResponseEntity.ok(taskAdapter.findAll());
     }
 
     @PostMapping

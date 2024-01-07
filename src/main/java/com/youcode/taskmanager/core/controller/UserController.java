@@ -19,13 +19,15 @@ public class UserController {
 
     private final UserAdapter userAdapter;
 
+    @GetMapping("/me")
+    public ResponseEntity<UserSingleResponse> getMe() {
+        return ResponseEntity.ok(userAdapter.getMe());
+    }
 
     @GetMapping
     public ResponseEntity<List<UserSingleResponse>> getAllUsers() {
         return ResponseEntity.ok(userAdapter.findAll());
     }
-
-
 
 
 

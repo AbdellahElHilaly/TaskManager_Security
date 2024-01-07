@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
         return findByIdOrThrow(id);
     }
 
+
+
     private User findByIdOrThrow(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
