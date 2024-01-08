@@ -5,19 +5,22 @@ import com.youcode.taskmanager.common.security.principal.dto.request.SigninReque
 import com.youcode.taskmanager.common.security.principal.dto.response.JwtAuthenticationResponse;
 import com.youcode.taskmanager.common.security.principal.dto.response.JwtRefreshTokenResponse;
 import com.youcode.taskmanager.common.security.provider.jwt.service.auth.AuthenticationService;
+import com.youcode.taskmanager.core.adapter.UserAdapter;
+import com.youcode.taskmanager.core.database.model.dto.response.UserSingleResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/security")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserAdapter userAdapter;
+
 
     @PostMapping("/signup")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest, HttpServletRequest httpServletRequest) {
@@ -38,6 +41,17 @@ public class AuthenticationController {
     public ResponseEntity<Void> logout(HttpServletRequest httpServletRequest) {
         authenticationService.logout(httpServletRequest);
         return ResponseEntity.ok().build();
+    }
+
+//    ------------------------------ test ------------------------------
+    @GetMapping("/me")
+    public ResponseEntity<UserSingleResponse> getMe() {
+        return ResponseEntity.ok(userAdapter.getMe());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserSingleResponse>> getAllUsers() {
+        return ResponseEntity.ok(userAdapter.findAll());
     }
 
 
